@@ -1,0 +1,11 @@
+supplier_id,supplier_name,material_type,delivery_days,on_time_delivery_percent,quality_score,material_cost
+SUP_01,Precision Alloys Corp,Titanium Ingot,5,96.5,94.2,450.0
+SUP_02,Aerospace Forgings Ltd,Billet Aluminum,4,95.0,92.8,210.0
+SUP_03,Global Foundry Solutions,Ductile Cast Iron,7,92.3,89.5,135.0
+SUP_04,Apex Raw Castings Ltd,Nickel-Resist Alloy,10,81.4,76.5,310.0
+SUP_05,EuroMetals Casting SA,Stainless Steel,6,94.8,93.1,280.0
+SUP_06,DynoActuators GmbH,Actuator Components,5,97.2,96.0,175.0
+SUP_07,Nippon Micro Vanes KK,High-Temp Inconel,8,93.5,91.4,390.0
+SUP_08,Ceramic Dynamics Inc,Silicon Nitride Balls,4,98.1,97.5,120.0
+SUP_09,Pacific Precision Cast,Die-Cast Aluminum,6,91.0,87.0,160.0
+SUP_10,Vortex Fasteners & Seals,High-Pressure Seals,3,99.0,98.2,45.0
