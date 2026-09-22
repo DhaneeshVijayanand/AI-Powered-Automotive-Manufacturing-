@@ -1,0 +1,6 @@
+factory_id,factory_name,city,country,factory_capacity
+FAC_01,Bangalore Plant,Bangalore,India,15000
+FAC_02,Pune Plant,Pune,India,12000
+FAC_03,Mexicali Plant,Mexicali,Mexico,18000
+FAC_04,Bucharest Plant,Bucharest,Romania,14000
+FAC_05,Wuhan Plant,Wuhan,China,16000

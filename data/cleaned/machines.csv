@@ -1,0 +1,21 @@
+machine_id,factory_id,machine_name,machine_type,operating_hours,downtime_hours,temperature,maintenance_count
+MCH_001,FAC_01,Bangalore 5-Axis CNC Milling Center #1,5-Axis CNC Milling Center,3099.6,106.3,70.5,5
+MCH_002,FAC_01,Bangalore CNC Precision Lathe #2,CNC Precision Lathe,3277.5,68.4,59.2,3
+MCH_003,FAC_01,Bangalore High-Speed Dynamic Balancer #3,High-Speed Dynamic Balancer,3492.9,80.1,56.8,5
+MCH_004,FAC_01,Bangalore Automated CMM Quality Scanner #4,Automated CMM Quality Scanner,3575.9,97.4,46.1,4
+MCH_005,FAC_02,Pune 5-Axis CNC Milling Center #1,5-Axis CNC Milling Center,2946.7,57.8,68.9,4
+MCH_006,FAC_02,Pune CNC Precision Lathe #2,CNC Precision Lathe,2818.4,74.4,61.5,4
+MCH_007,FAC_02,Pune High-Speed Dynamic Balancer #3,High-Speed Dynamic Balancer,3100.0,385.5,84.5,14
+MCH_008,FAC_02,Pune Automated CMM Quality Scanner #4,Automated CMM Quality Scanner,3579.0,52.5,45.2,3
+MCH_009,FAC_03,Mexicali 5-Axis CNC Milling Center #1,5-Axis CNC Milling Center,3106.0,108.7,68.5,5
+MCH_010,FAC_03,Mexicali CNC Precision Lathe #2,CNC Precision Lathe,3286.0,47.8,59.0,4
+MCH_011,FAC_03,Mexicali High-Speed Dynamic Balancer #3,High-Speed Dynamic Balancer,3553.8,77.2,54.4,2
+MCH_012,FAC_03,Mexicali Automated CMM Quality Scanner #4,Automated CMM Quality Scanner,2878.1,86.3,47.8,4
+MCH_013,FAC_04,Bucharest 5-Axis CNC Milling Center #1,5-Axis CNC Milling Center,3196.1,37.6,71.8,4
+MCH_014,FAC_04,Bucharest CNC Precision Lathe #2,CNC Precision Lathe,2945.8,91.7,61.7,2
+MCH_015,FAC_04,Bucharest High-Speed Dynamic Balancer #3,High-Speed Dynamic Balancer,3254.2,37.3,57.8,4
+MCH_016,FAC_04,Bucharest Automated CMM Quality Scanner #4,Automated CMM Quality Scanner,3551.6,102.1,49.0,4
+MCH_017,FAC_05,Wuhan 5-Axis CNC Milling Center #1,5-Axis CNC Milling Center,2836.2,59.4,67.9,2
+MCH_018,FAC_05,Wuhan CNC Precision Lathe #2,CNC Precision Lathe,3231.8,79.0,65.7,4
+MCH_019,FAC_05,Wuhan High-Speed Dynamic Balancer #3,High-Speed Dynamic Balancer,3234.2,45.6,57.5,1
+MCH_020,FAC_05,Wuhan Automated CMM Quality Scanner #4,Automated CMM Quality Scanner,2812.5,66.8,47.5,3
