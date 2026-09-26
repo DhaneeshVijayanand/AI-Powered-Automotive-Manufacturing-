@@ -1,7 +1,7 @@
 """
 =============================================================================
 APEX TURBOTECH — ENTERPRISE AUTOMOTIVE INTELLIGENCE & QUALITY PLATFORM
-High-End Executive Glassmorphism & Cyber-Automotive Dashboard
+High-End Executive Glassmorphism & Mission-Control Command Deck
 Technologies: Streamlit, Plotly, Pandas, SQLite, Grounded AI
 =============================================================================
 """
@@ -20,18 +20,18 @@ from plotly.subplots import make_subplots
 # 1. PAGE CONFIGURATION & METADATA
 # -----------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Apex TurboTech | Executive Manufacturing BI",
+    page_title="Apex TurboTech | Executive Mission Control",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # -----------------------------------------------------------------------------
-# 2. PRO-GRADE EXECUTIVE DARK GLASSMORPHISM CSS
+# 2. PRO-GRADE EXECUTIVE DARK GLASSMORPHISM & SIDEBAR CSS
 # -----------------------------------------------------------------------------
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
     html, body, [class*="css"] {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -48,13 +48,13 @@ st.markdown("""
         backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 16px;
-        padding: 24px 32px;
-        margin-bottom: 24px;
+        padding: 22px 30px;
+        margin-bottom: 22px;
         box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
     }
     
     .brand-title {
-        font-size: 28px;
+        font-size: 26px;
         font-weight: 800;
         letter-spacing: -0.5px;
         background: linear-gradient(90deg, #38BDF8 0%, #818CF8 50%, #C084FC 100%);
@@ -65,17 +65,17 @@ st.markdown("""
 
     .brand-subtitle {
         color: #94A3B8;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 500;
-        margin-top: 4px;
+        margin-top: 3px;
     }
 
     /* Executive Glass KPI Cards */
     .kpi-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 16px;
-        margin-bottom: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 14px;
+        margin-bottom: 22px;
     }
 
     .kpi-card {
@@ -83,8 +83,8 @@ st.markdown("""
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.07);
         border-top: 3px solid #38BDF8;
-        border-radius: 14px;
-        padding: 18px 20px;
+        border-radius: 12px;
+        padding: 16px 18px;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
@@ -95,19 +95,13 @@ st.markdown("""
         box-shadow: 0 15px 30px -5px rgba(56, 189, 248, 0.15);
     }
 
-    .kpi-card.warning {
-        border-top-color: #F59E0B;
-    }
-    .kpi-card.danger {
-        border-top-color: #EF4444;
-    }
-    .kpi-card.success {
-        border-top-color: #10B981;
-    }
+    .kpi-card.warning { border-top-color: #F59E0B; }
+    .kpi-card.danger { border-top-color: #EF4444; }
+    .kpi-card.success { border-top-color: #10B981; }
 
     .kpi-label {
         color: #94A3B8;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.8px;
@@ -115,10 +109,10 @@ st.markdown("""
 
     .kpi-value {
         color: #F8FAFC;
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 800;
         letter-spacing: -0.5px;
-        margin: 6px 0;
+        margin: 4px 0;
     }
 
     .kpi-badge {
@@ -127,22 +121,44 @@ st.markdown("""
         gap: 4px;
         font-size: 11px;
         font-weight: 600;
-        padding: 3px 8px;
+        padding: 2px 8px;
         border-radius: 9999px;
     }
 
     .badge-danger { background: rgba(239, 68, 68, 0.15); color: #FCA5A5; border: 1px solid rgba(239, 68, 68, 0.3); }
     .badge-success { background: rgba(16, 185, 129, 0.15); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.3); }
     .badge-info { background: rgba(56, 189, 248, 0.15); color: #7DD3FC; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #FCD34D; border: 1px solid rgba(245, 158, 11, 0.3); }
 
-    /* Glass Container Boxes */
-    .glass-box {
-        background: rgba(15, 23, 42, 0.55);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 14px;
-        padding: 20px;
-        margin-bottom: 20px;
+    /* Mission Control Sidebar Styling */
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #090e17 0%, #06090e 100%) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sidebar-panel {
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 16px;
+    }
+
+    .plant-status-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        font-size: 12px;
+    }
+
+    .plant-status-row:last-child { border-bottom: none; }
+
+    .telemetry-tag {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: #38BDF8;
     }
 
     /* AI Response Card */
@@ -151,8 +167,8 @@ st.markdown("""
         border: 1px solid rgba(99, 102, 241, 0.35);
         border-left: 4px solid #6366F1;
         border-radius: 12px;
-        padding: 24px;
-        margin-top: 16px;
+        padding: 22px;
+        margin-top: 14px;
         box-shadow: 0 15px 35px -10px rgba(99, 102, 241, 0.2);
     }
 </style>
@@ -184,28 +200,74 @@ def get_enterprise_data():
 factories, products, shifts, suppliers, machines, production, quality, master_df = get_enterprise_data()
 
 # -----------------------------------------------------------------------------
-# 4. TOP BRAND HEADER & CONTROL PANEL
+# 4. ADVANCED MISSION CONTROL SIDEBAR
 # -----------------------------------------------------------------------------
-st.markdown("""
-<div class="brand-header">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-        <div>
-            <h1 class="brand-title">APEX TURBOTECH ⚡</h1>
-            <div class="brand-subtitle">Automotive Turbocharger Manufacturing Intelligence • Tier-1 Quality Operations</div>
-        </div>
-        <div style="text-align: right;">
-            <span class="kpi-badge badge-success">● SYSTEM LIVE</span>
-            <span class="kpi-badge badge-info" style="margin-left: 8px;">MySQL 8.0 DWH Connected</span>
-        </div>
+st.sidebar.markdown("""
+<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+    <div style="background: rgba(56, 189, 248, 0.2); border: 1px solid #38BDF8; border-radius: 8px; padding: 6px 10px;">
+        <span style="font-size: 18px;">🕹️</span>
+    </div>
+    <div>
+        <div style="font-size: 16px; font-weight: 800; color: #F8FAFC; letter-spacing: -0.3px;">COMMAND DECK</div>
+        <div style="font-size: 10px; font-weight: 600; color: #38BDF8; letter-spacing: 1px;">APEX MISSION CONTROL</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Sidebar Filter Controls
-st.sidebar.markdown("### 🎛️ Enterprise Control Room")
+# Plant Health Radar Widget
+st.sidebar.markdown("""
+<div class="sidebar-panel">
+    <div style="font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+        🏭 Global Plant Live Telemetry
+    </div>
+    <div class="plant-status-row">
+        <span>Bangalore Plant (IN)</span>
+        <span class="kpi-badge badge-success">🟢 2.81% Normal</span>
+    </div>
+    <div class="plant-status-row">
+        <span>Mexicali Plant (MX)</span>
+        <span class="kpi-badge badge-success">🟢 2.80% Normal</span>
+    </div>
+    <div class="plant-status-row">
+        <span>Wuhan Plant (CN)</span>
+        <span class="kpi-badge badge-success">🟢 2.80% Normal</span>
+    </div>
+    <div class="plant-status-row">
+        <span>Bucharest Plant (RO)</span>
+        <span class="kpi-badge badge-warning">🟡 2.83% Alert</span>
+    </div>
+    <div class="plant-status-row">
+        <span>Pune Plant (IN)</span>
+        <span class="kpi-badge badge-danger">🔴 3.82% CRITICAL</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# Operational Filter Controls
+st.sidebar.markdown("#### 🎯 Operational Targeting")
 selected_factory = st.sidebar.selectbox("Manufacturing Plant", ["All Global Plants"] + factories["factory_name"].tolist())
 selected_shift = st.sidebar.selectbox("Operating Shift", ["All Operating Shifts"] + shifts["shift_name"].tolist())
 selected_product = st.sidebar.selectbox("Product Line", ["All Product Categories"] + products["product_category"].unique().tolist())
+
+# Dynamic Simulation Threshold Sliders
+st.sidebar.markdown("#### ⚙️ Real-Time Quality Thresholds")
+scrap_threshold = st.sidebar.slider("Scrap Alert Limit (%)", min_value=1.5, max_value=5.0, value=2.5, step=0.1)
+temp_limit = st.sidebar.slider("Machine Temp Alarm (°C)", min_value=60, max_value=95, value=75, step=1)
+
+# System Status Telemetry Box
+st.sidebar.markdown(f"""
+<div class="sidebar-panel" style="margin-top: 14px;">
+    <div style="font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; margin-bottom: 6px;">
+        📡 Enterprise Telemetry
+    </div>
+    <div style="font-size: 11px; color: #CBD5E1; line-height: 1.6;">
+        • <b>Data Engine:</b> <span class="telemetry-tag">MySQL 8.0 DWH</span><br>
+        • <b>Total Records:</b> <span class="telemetry-tag">55,000 Batches</span><br>
+        • <b>AI Copilot:</b> <span class="telemetry-tag">Grounded v2.4 (Active)</span><br>
+        • <b>Overheating Units:</b> <span class="telemetry-tag">{len(machines[machines['temperature'] > temp_limit])} Machines</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # Apply active filtering
 filtered_df = master_df.copy()
@@ -223,14 +285,28 @@ if selected_product != "All Product Categories":
     filtered_df = filtered_df[filtered_df["product_id"].isin(p_ids)]
 
 # -----------------------------------------------------------------------------
-# 5. DYNAMIC EXECUTIVE KPI SCORECARDS
+# 5. TOP BRAND HEADER & KPI SCORECARDS
 # -----------------------------------------------------------------------------
+st.markdown("""
+<div class="brand-header">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div>
+            <h1 class="brand-title">APEX TURBOTECH ⚡</h1>
+            <div class="brand-subtitle">Automotive Turbocharger Manufacturing Intelligence • Tier-1 Quality Operations</div>
+        </div>
+        <div style="text-align: right;">
+            <span class="kpi-badge badge-success">● SYSTEM LIVE</span>
+            <span class="kpi-badge badge-info" style="margin-left: 8px;">MySQL 8.0 DWH Connected</span>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 total_produced = filtered_df["produced_units"].sum()
 total_inspected = filtered_df["inspected_units"].sum()
 total_defects = filtered_df["defective_units"].sum()
 defect_rate = (total_defects / total_inspected * 100) if total_inspected > 0 else 0
 total_spend = filtered_df["production_cost"].sum()
-efficiency_pct = (total_produced / filtered_df["planned_units"].sum() * 100) if filtered_df["planned_units"].sum() > 0 else 0
 
 kpi_html = f"""
 <div class="kpi-container">
@@ -244,10 +320,10 @@ kpi_html = f"""
         <div class="kpi-value">{total_defects:,.0f}</div>
         <span class="kpi-badge badge-danger">195.4K Total Rejects</span>
     </div>
-    <div class="kpi-card {'danger' if defect_rate > 3.0 else 'warning'}">
+    <div class="kpi-card {'danger' if defect_rate > scrap_threshold else 'warning'}">
         <div class="kpi-label">Defect Rate</div>
         <div class="kpi-value">{defect_rate:.2f}%</div>
-        <span class="kpi-badge {'badge-danger' if defect_rate > 3.0 else 'badge-info'}">Target: &lt; 2.50%</span>
+        <span class="kpi-badge {'badge-danger' if defect_rate > scrap_threshold else 'badge-info'}">Alarm Limit: &lt; {scrap_threshold:.1f}%</span>
     </div>
     <div class="kpi-card">
         <div class="kpi-label">Operational Spend</div>
@@ -274,10 +350,9 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "🤖 Grounded AI Business Assistant"
 ])
 
-# Universal Plotly Theme Helper
 def apply_pro_layout(fig, title_text=""):
     fig.update_layout(
-        title=dict(text=title_text, font=dict(family="Inter", size=16, color="#F8FAFC")),
+        title=dict(text=title_text, font=dict(family="Inter", size=15, color="#F8FAFC")),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(15,23,42,0.6)",
         font=dict(family="Inter", color="#94A3B8"),
@@ -288,9 +363,7 @@ def apply_pro_layout(fig, title_text=""):
     )
     return fig
 
-# -----------------------------------------------------------------------------
 # TAB 1: PLANT BENCHMARKING
-# -----------------------------------------------------------------------------
 with tab1:
     st.markdown("### 🏭 Global Multi-Plant Operational Benchmarking")
     col1, col2 = st.columns([3, 2])
@@ -298,8 +371,7 @@ with tab1:
     fac_group = master_df.groupby("factory_id").agg(
         Produced_Units=("produced_units", "sum"),
         Scrapped_Units=("defective_units", "sum"),
-        Inspected_Units=("inspected_units", "sum"),
-        Total_Cost=("production_cost", "sum")
+        Inspected_Units=("inspected_units", "sum")
     ).reset_index()
     fac_summary = factories.merge(fac_group, on="factory_id")
     fac_summary["Defect_Rate_Pct"] = (fac_summary["Scrapped_Units"] / fac_summary["Inspected_Units"]) * 100
@@ -314,9 +386,9 @@ with tab1:
             color="Defect_Rate_Pct",
             color_continuous_scale=["#10B981", "#38BDF8", "#F59E0B", "#EF4444"],
             text_auto=".2f",
-            title="Defect Rate (%) by Manufacturing Facility"
+            title=f"Defect Rate (%) by Plant vs Alarm Limit ({scrap_threshold:.1f}%)"
         )
-        fig_bar.add_vline(x=2.5, line_dash="dash", line_color="#EF4444", annotation_text="Tolerance Limit (2.5%)")
+        fig_bar.add_vline(x=scrap_threshold, line_dash="dash", line_color="#EF4444", annotation_text=f"Limit ({scrap_threshold:.1f}%)")
         apply_pro_layout(fig_bar)
         fig_bar.update_layout(coloraxis_showscale=False, height=360)
         st.plotly_chart(fig_bar, use_container_width=True)
@@ -334,7 +406,6 @@ with tab1:
         fig_donut.update_layout(height=360)
         st.plotly_chart(fig_donut, use_container_width=True)
 
-    st.markdown("#### 📋 Plant Operational Matrix")
     st.dataframe(fac_summary[["factory_name", "city", "country", "factory_capacity", "Produced_Units", "Scrapped_Units", "Defect_Rate_Pct"]].style.format({
         "factory_capacity": "{:,} units/mo",
         "Produced_Units": "{:,}",
@@ -342,9 +413,7 @@ with tab1:
         "Defect_Rate_Pct": "{:.2f}%"
     }), use_container_width=True)
 
-# -----------------------------------------------------------------------------
-# TAB 2: MACHINE RELIABILITY & THERMAL STRESS
-# -----------------------------------------------------------------------------
+# TAB 2: MACHINE RELIABILITY
 with tab2:
     st.markdown("### ⚙️ Predictive Machine Health & Thermal Stress Analysis")
     col1, col2 = st.columns([3, 2])
@@ -361,9 +430,9 @@ with tab2:
             color_continuous_scale=["#38BDF8", "#F59E0B", "#EF4444"],
             hover_name="machine_name",
             text="machine_id",
-            title="Operating Temperature (°C) vs. Unplanned Downtime (Hours)"
+            title=f"Operating Temp (°C) vs. Downtime (Hours) [Alarm: {temp_limit}°C]"
         )
-        fig_scatter.add_vline(x=75.0, line_dash="dash", line_color="#EF4444", annotation_text="Critical Threshold (75°C)")
+        fig_scatter.add_vline(x=temp_limit, line_dash="dash", line_color="#EF4444", annotation_text=f"Alarm ({temp_limit}°C)")
         apply_pro_layout(fig_scatter)
         fig_scatter.update_layout(height=380)
         st.plotly_chart(fig_scatter, use_container_width=True)
@@ -385,9 +454,7 @@ with tab2:
 
     st.error("🚨 **CRITICAL ALERT:** Machine **`MCH_007` (Pune Plant)** operates at **84.5°C** (+9.5°C above safety cutoff), causing **385.5 hours of downtime** and 14 maintenance breakdowns.")
 
-# -----------------------------------------------------------------------------
-# TAB 3: SUPPLIER RISK MATRIX
-# -----------------------------------------------------------------------------
+# TAB 3: SUPPLIER RISK
 with tab3:
     st.markdown("### 🚚 Raw Material Supplier Procurement & Quality Risk")
     
@@ -410,7 +477,7 @@ with tab3:
             color_continuous_scale=["#10B981", "#F59E0B", "#EF4444"],
             hover_name="supplier_name",
             text="supplier_name",
-            title="Supplier Risk Matrix: On-Time Delivery (OTD %) vs. In-Plant Scrap Rate (%)"
+            title="Supplier Risk Matrix: On-Time Delivery (OTD %) vs. Scrap Rate (%)"
         )
         fig_bubble.add_hline(y=5.0, line_dash="dash", line_color="#EF4444", annotation_text="High Scrap Risk (>5%)")
         fig_bubble.add_vline(x=90.0, line_dash="dash", line_color="#F59E0B", annotation_text="Min OTD Benchmark (90%)")
@@ -432,9 +499,7 @@ with tab3:
         fig_radar.update_layout(coloraxis_showscale=False, height=380)
         st.plotly_chart(fig_radar, use_container_width=True)
 
-# -----------------------------------------------------------------------------
-# TAB 4: DEFECT PARETO & SHIFT DISPARITY
-# -----------------------------------------------------------------------------
+# TAB 4: DEFECT PARETO & SHIFTS
 with tab4:
     st.markdown("### 📈 Defect Mode Pareto (80/20) & Shift Disparity")
     col1, col2 = st.columns([3, 2])
@@ -479,9 +544,7 @@ with tab4:
         fig_shift.update_layout(coloraxis_showscale=False, height=380)
         st.plotly_chart(fig_shift, use_container_width=True)
 
-# -----------------------------------------------------------------------------
-# TAB 5: GROUNDED AI BUSINESS ASSISTANT
-# -----------------------------------------------------------------------------
+# TAB 5: AI COPILOT
 with tab5:
     st.markdown("### 🤖 Executive Grounded AI Copilot (Zero Hallucination)")
     st.markdown("Select an executive inquiry to generate a verified, structured diagnostic briefing:")
