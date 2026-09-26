@@ -2,7 +2,7 @@
 =============================================================================
 APEX TURBOTECH — ENTERPRISE AUTOMOTIVE INTELLIGENCE & QUALITY PLATFORM
 High-End Executive Glassmorphism & Mission-Control Command Deck
-Technologies: Streamlit, Plotly, Pandas, SQLite, Grounded AI
+Plants: Tokyo (JP), Berlin (DE), Dubai (AE), Mexicali (MX), Wuhan (CN)
 =============================================================================
 """
 
@@ -214,14 +214,14 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Plant Health Radar Widget
+# Plant Health Radar Widget with Updated Cities
 st.sidebar.markdown("""
 <div class="sidebar-panel">
     <div style="font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
         🏭 Global Plant Live Telemetry
     </div>
     <div class="plant-status-row">
-        <span>Bangalore Plant (IN)</span>
+        <span>Tokyo Plant (JP)</span>
         <span class="kpi-badge badge-success">🟢 2.81% Normal</span>
     </div>
     <div class="plant-status-row">
@@ -233,11 +233,11 @@ st.sidebar.markdown("""
         <span class="kpi-badge badge-success">🟢 2.80% Normal</span>
     </div>
     <div class="plant-status-row">
-        <span>Bucharest Plant (RO)</span>
+        <span>Dubai Plant (AE)</span>
         <span class="kpi-badge badge-warning">🟡 2.83% Alert</span>
     </div>
     <div class="plant-status-row">
-        <span>Pune Plant (IN)</span>
+        <span>Berlin Plant (DE)</span>
         <span class="kpi-badge badge-danger">🔴 3.82% CRITICAL</span>
     </div>
 </div>
@@ -452,7 +452,7 @@ with tab2:
         fig_top_m.update_layout(coloraxis_showscale=False, height=380)
         st.plotly_chart(fig_top_m, use_container_width=True)
 
-    st.error("🚨 **CRITICAL ALERT:** Machine **`MCH_007` (Pune Plant)** operates at **84.5°C** (+9.5°C above safety cutoff), causing **385.5 hours of downtime** and 14 maintenance breakdowns.")
+    st.error("🚨 **CRITICAL ALERT:** Machine **`MCH_007` (Berlin Plant)** operates at **84.5°C** (+9.5°C above safety cutoff), causing **385.5 hours of downtime** and 14 maintenance breakdowns.")
 
 # TAB 3: SUPPLIER RISK
 with tab3:
