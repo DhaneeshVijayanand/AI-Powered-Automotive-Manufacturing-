@@ -1,7 +1,7 @@
 """
 =============================================================================
 APEX TURBOTECH — ENTERPRISE AUTOMOTIVE INTELLIGENCE & QUALITY PLATFORM
-High-End Executive Glassmorphism & Mission-Control Command Deck
+Multi-Currency Financial Analytics (USD, EUR, JPY, AED, MXN, CNY)
 Plants: Tokyo (JP), Berlin (DE), Dubai (AE), Mexicali (MX), Wuhan (CN)
 =============================================================================
 """
@@ -20,7 +20,7 @@ from plotly.subplots import make_subplots
 # 1. PAGE CONFIGURATION & METADATA
 # -----------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Apex TurboTech | Executive Mission Control",
+    page_title="Apex TurboTech | Global Multi-Currency BI",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -175,7 +175,28 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
-# 3. DATA INGESTION & CACHING LAYER
+# 3. MULTI-CURRENCY CONVERSION SYSTEM
+# -----------------------------------------------------------------------------
+# Global real-world FX conversion rates against USD base
+CURRENCY_RATES = {
+    "USD ($) — Corporate Base": {"symbol": "$", "code": "USD", "rate": 1.0, "name": "US Dollar"},
+    "EUR (€) — Germany (Berlin)": {"symbol": "€", "code": "EUR", "rate": 0.92, "name": "Euro"},
+    "JPY (¥) — Japan (Tokyo)": {"symbol": "¥", "code": "JPY", "rate": 152.5, "name": "Japanese Yen"},
+    "AED (د.إ) — UAE (Dubai)": {"symbol": "AED ", "code": "AED", "rate": 3.67, "name": "UAE Dirham"},
+    "MXN ($ Mex) — Mexico (Mexicali)": {"symbol": "MX$", "code": "MXN", "rate": 19.80, "name": "Mexican Peso"},
+    "CNY (¥) — China (Wuhan)": {"symbol": "CN¥", "code": "CNY", "rate": 7.24, "name": "Chinese Yuan"}
+}
+
+PLANT_LOCAL_CURRENCIES = {
+    "Tokyo Plant": {"symbol": "¥", "code": "JPY", "rate": 152.5},
+    "Berlin Plant": {"symbol": "€", "code": "EUR", "rate": 0.92},
+    "Dubai Plant": {"symbol": "AED ", "code": "AED", "rate": 3.67},
+    "Mexicali Plant": {"symbol": "MX$", "code": "MXN", "rate": 19.80},
+    "Wuhan Plant": {"symbol": "CN¥", "code": "CNY", "rate": 7.24}
+}
+
+# -----------------------------------------------------------------------------
+# 4. DATA INGESTION & CACHING LAYER
 # -----------------------------------------------------------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CLEAN_DIR = os.path.join(BASE_DIR, "data", "cleaned")
@@ -200,7 +221,7 @@ def get_enterprise_data():
 factories, products, shifts, suppliers, machines, production, quality, master_df = get_enterprise_data()
 
 # -----------------------------------------------------------------------------
-# 4. ADVANCED MISSION CONTROL SIDEBAR
+# 5. ADVANCED MISSION CONTROL SIDEBAR
 # -----------------------------------------------------------------------------
 st.sidebar.markdown("""
 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
@@ -214,7 +235,7 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Plant Health Radar Widget with Updated Cities
+# Plant Health Radar Widget
 st.sidebar.markdown("""
 <div class="sidebar-panel">
     <div style="font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
@@ -243,6 +264,18 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# Multi-Currency Switcher
+st.sidebar.markdown("#### 💱 Financial Currency Switcher")
+selected_currency_option = st.sidebar.selectbox(
+    "Reporting Currency",
+    list(CURRENCY_RATES.keys()),
+    index=0
+)
+curr_info = CURRENCY_RATES[selected_currency_option]
+curr_symbol = curr_info["symbol"]
+curr_rate = curr_info["rate"]
+curr_code = curr_info["code"]
+
 # Operational Filter Controls
 st.sidebar.markdown("#### 🎯 Operational Targeting")
 selected_factory = st.sidebar.selectbox("Manufacturing Plant", ["All Global Plants"] + factories["factory_name"].tolist())
@@ -262,9 +295,9 @@ st.sidebar.markdown(f"""
     </div>
     <div style="font-size: 11px; color: #CBD5E1; line-height: 1.6;">
         • <b>Data Engine:</b> <span class="telemetry-tag">MySQL 8.0 DWH</span><br>
-        • <b>Total Records:</b> <span class="telemetry-tag">55,000 Batches</span><br>
-        • <b>AI Copilot:</b> <span class="telemetry-tag">Grounded v2.4 (Active)</span><br>
-        • <b>Overheating Units:</b> <span class="telemetry-tag">{len(machines[machines['temperature'] > temp_limit])} Machines</span>
+        • <b>Active FX Rate:</b> <span class="telemetry-tag">1 USD = {curr_rate} {curr_code}</span><br>
+        • <b>Total Batches:</b> <span class="telemetry-tag">55,000 Ingested</span><br>
+        • <b>AI Copilot:</b> <span class="telemetry-tag">Grounded v2.4 (Active)</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -285,18 +318,18 @@ if selected_product != "All Product Categories":
     filtered_df = filtered_df[filtered_df["product_id"].isin(p_ids)]
 
 # -----------------------------------------------------------------------------
-# 5. TOP BRAND HEADER & KPI SCORECARDS
+# 6. TOP BRAND HEADER & KPI SCORECARDS (WITH MULTI-CURRENCY CONVERSION)
 # -----------------------------------------------------------------------------
-st.markdown("""
+st.markdown(f"""
 <div class="brand-header">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
         <div>
             <h1 class="brand-title">APEX TURBOTECH ⚡</h1>
-            <div class="brand-subtitle">Automotive Turbocharger Manufacturing Intelligence • Tier-1 Quality Operations</div>
+            <div class="brand-subtitle">Automotive Turbocharger Manufacturing Intelligence • Multi-Currency Reporting ({curr_code})</div>
         </div>
         <div style="text-align: right;">
             <span class="kpi-badge badge-success">● SYSTEM LIVE</span>
-            <span class="kpi-badge badge-info" style="margin-left: 8px;">MySQL 8.0 DWH Connected</span>
+            <span class="kpi-badge badge-info" style="margin-left: 8px;">Currency: {curr_code} ({curr_symbol})</span>
         </div>
     </div>
 </div>
@@ -306,7 +339,9 @@ total_produced = filtered_df["produced_units"].sum()
 total_inspected = filtered_df["inspected_units"].sum()
 total_defects = filtered_df["defective_units"].sum()
 defect_rate = (total_defects / total_inspected * 100) if total_inspected > 0 else 0
-total_spend = filtered_df["production_cost"].sum()
+total_spend_usd = filtered_df["production_cost"].sum()
+total_spend_converted = total_spend_usd * curr_rate
+unit_cost_converted = (total_spend_converted / total_produced) if total_produced > 0 else 0
 
 kpi_html = f"""
 <div class="kpi-container">
@@ -323,29 +358,29 @@ kpi_html = f"""
     <div class="kpi-card {'danger' if defect_rate > scrap_threshold else 'warning'}">
         <div class="kpi-label">Defect Rate</div>
         <div class="kpi-value">{defect_rate:.2f}%</div>
-        <span class="kpi-badge {'badge-danger' if defect_rate > scrap_threshold else 'badge-info'}">Alarm Limit: &lt; {scrap_threshold:.1f}%</span>
+        <span class="kpi-badge {'badge-danger' if defect_rate > scrap_threshold else 'badge-info'}">Alarm: &lt; {scrap_threshold:.1f}%</span>
     </div>
     <div class="kpi-card">
-        <div class="kpi-label">Operational Spend</div>
-        <div class="kpi-value">${total_spend/1e6:.1f}M</div>
-        <span class="kpi-badge badge-info">${total_spend/total_produced:.2f}/unit avg</span>
+        <div class="kpi-label">Spend in {curr_code}</div>
+        <div class="kpi-value">{curr_symbol}{total_spend_converted/1e6:,.1f}M</div>
+        <span class="kpi-badge badge-info">{curr_symbol}{unit_cost_converted:.2f}/unit (FX: {curr_rate})</span>
     </div>
     <div class="kpi-card warning">
-        <div class="kpi-label">Batch Transactions</div>
-        <div class="kpi-value">{len(filtered_df):,}</div>
-        <span class="kpi-badge badge-info">100% Inspected</span>
+        <div class="kpi-label">Base Spend in USD</div>
+        <div class="kpi-value">${total_spend_usd/1e6:.1f}M</div>
+        <span class="kpi-badge badge-info">${total_spend_usd/total_produced:.2f}/unit USD</span>
     </div>
 </div>
 """
 st.markdown(kpi_html, unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
-# 6. PROFESSIONAL EXECUTIVE TABS
+# 7. PROFESSIONAL EXECUTIVE TABS
 # -----------------------------------------------------------------------------
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "🏭 Multi-Plant Benchmarking", 
+    "🏭 Multi-Plant Benchmarking & Currencies", 
     "⚙️ Machine Reliability & Downtime", 
-    "🚚 Supplier Risk Matrix", 
+    "🚚 Supplier Risk & Material Cost", 
     "📈 Defect Pareto & Shift Disparity",
     "🤖 Grounded AI Business Assistant"
 ])
@@ -363,18 +398,29 @@ def apply_pro_layout(fig, title_text=""):
     )
     return fig
 
-# TAB 1: PLANT BENCHMARKING
+# TAB 1: PLANT BENCHMARKING & MULTI-CURRENCY COMPARISON
 with tab1:
-    st.markdown("### 🏭 Global Multi-Plant Operational Benchmarking")
+    st.markdown("### 🏭 Global Multi-Plant Operational & Currency Benchmarking")
     col1, col2 = st.columns([3, 2])
     
     fac_group = master_df.groupby("factory_id").agg(
         Produced_Units=("produced_units", "sum"),
         Scrapped_Units=("defective_units", "sum"),
-        Inspected_Units=("inspected_units", "sum")
+        Inspected_Units=("inspected_units", "sum"),
+        Spend_USD=("production_cost", "sum")
     ).reset_index()
     fac_summary = factories.merge(fac_group, on="factory_id")
     fac_summary["Defect_Rate_Pct"] = (fac_summary["Scrapped_Units"] / fac_summary["Inspected_Units"]) * 100
+    
+    # Calculate Local Currency Spend per Plant
+    def calc_local_spend(row):
+        plant = row["factory_name"]
+        loc = PLANT_LOCAL_CURRENCIES.get(plant, {"symbol": "$", "rate": 1.0, "code": "USD"})
+        val = row["Spend_USD"] * loc["rate"]
+        return f"{loc['symbol']}{val/1e6:,.1f}M {loc['code']}"
+
+    fac_summary["Local_Plant_Spend"] = fac_summary.apply(calc_local_spend, axis=1)
+    fac_summary["Selected_Currency_Spend"] = fac_summary["Spend_USD"] * curr_rate
     fac_summary = fac_summary.sort_values("Defect_Rate_Pct", ascending=True)
 
     with col1:
@@ -388,29 +434,30 @@ with tab1:
             text_auto=".2f",
             title=f"Defect Rate (%) by Plant vs Alarm Limit ({scrap_threshold:.1f}%)"
         )
-        fig_bar.add_vline(x=scrap_threshold, line_dash="dash", line_color="#EF4444", annotation_text=f"Limit ({scrap_threshold:.1f}%)")
+        fig_bar.add_vline(x=scrap_threshold, line_dash="dash", line_color="#EF4444", annotation_text=f"Alarm ({scrap_threshold:.1f}%)")
         apply_pro_layout(fig_bar)
         fig_bar.update_layout(coloraxis_showscale=False, height=360)
         st.plotly_chart(fig_bar, use_container_width=True)
 
     with col2:
-        fig_donut = px.pie(
+        fig_spend = px.pie(
             fac_summary,
             names="factory_name",
-            values="Produced_Units",
+            values="Selected_Currency_Spend",
             hole=0.6,
             color_discrete_sequence=["#38BDF8", "#818CF8", "#C084FC", "#F472B6", "#34D399"],
-            title="Global Production Volume Allocation"
+            title=f"Global Operational Spend ({curr_code})"
         )
-        apply_pro_layout(fig_donut)
-        fig_donut.update_layout(height=360)
-        st.plotly_chart(fig_donut, use_container_width=True)
+        apply_pro_layout(fig_spend)
+        fig_spend.update_layout(height=360)
+        st.plotly_chart(fig_spend, use_container_width=True)
 
-    st.dataframe(fac_summary[["factory_name", "city", "country", "factory_capacity", "Produced_Units", "Scrapped_Units", "Defect_Rate_Pct"]].style.format({
-        "factory_capacity": "{:,} units/mo",
+    st.markdown("#### 📋 Multi-Currency Operational & Financial Scorecard")
+    st.dataframe(fac_summary[["factory_name", "city", "country", "Produced_Units", "Scrapped_Units", "Defect_Rate_Pct", "Spend_USD", "Local_Plant_Spend"]].style.format({
         "Produced_Units": "{:,}",
         "Scrapped_Units": "{:,}",
-        "Defect_Rate_Pct": "{:.2f}%"
+        "Defect_Rate_Pct": "{:.2f}%",
+        "Spend_USD": "${:,.2f}"
     }), use_container_width=True)
 
 # TAB 2: MACHINE RELIABILITY
@@ -454,9 +501,9 @@ with tab2:
 
     st.error("🚨 **CRITICAL ALERT:** Machine **`MCH_007` (Berlin Plant)** operates at **84.5°C** (+9.5°C above safety cutoff), causing **385.5 hours of downtime** and 14 maintenance breakdowns.")
 
-# TAB 3: SUPPLIER RISK
+# TAB 3: SUPPLIER RISK & COST
 with tab3:
-    st.markdown("### 🚚 Raw Material Supplier Procurement & Quality Risk")
+    st.markdown("### 🚚 Raw Material Supplier Procurement, Cost & Quality Risk")
     
     sup_agg = quality.groupby("supplier_id").agg(
         Total_Inspected=("inspected_units", "sum"),
@@ -464,6 +511,7 @@ with tab3:
     ).reset_index()
     sup_matrix = suppliers.merge(sup_agg, on="supplier_id")
     sup_matrix["Actual_Scrap_Rate_Pct"] = (sup_matrix["Total_Scrapped"] / sup_matrix["Total_Inspected"]) * 100
+    sup_matrix["Material_Cost_Converted"] = sup_matrix["material_cost"] * curr_rate
     
     col1, col2 = st.columns([3, 2])
     
@@ -498,6 +546,17 @@ with tab3:
         apply_pro_layout(fig_radar)
         fig_radar.update_layout(coloraxis_showscale=False, height=380)
         st.plotly_chart(fig_radar, use_container_width=True)
+
+    st.markdown(f"#### 📦 Supplier Commercial Data (Displayed in {curr_code})")
+    st.dataframe(sup_matrix[["supplier_name", "material_type", "on_time_delivery_percent", "quality_score", "Total_Inspected", "Total_Scrapped", "Actual_Scrap_Rate_Pct", "material_cost", "Material_Cost_Converted"]].style.format({
+        "Total_Inspected": "{:,}",
+        "Total_Scrapped": "{:,}",
+        "on_time_delivery_percent": "{:.1f}%",
+        "quality_score": "{:.1f}",
+        "Actual_Scrap_Rate_Pct": "{:.2f}%",
+        "material_cost": "${:,.2f} USD",
+        "Material_Cost_Converted": f"{curr_symbol}{{:,.2f}} {curr_code}"
+    }), use_container_width=True)
 
 # TAB 4: DEFECT PARETO & SHIFTS
 with tab4:
