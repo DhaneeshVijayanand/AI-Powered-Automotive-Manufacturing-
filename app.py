@@ -1,7 +1,7 @@
 """
 =============================================================================
 Apex TurboTech - AI-Powered Automotive Manufacturing BI & Quality Dashboard
-Live Web Application (Streamlit + Plotly)
+Live Web Application (Streamlit)
 =============================================================================
 """
 
@@ -30,8 +30,8 @@ st.markdown("""
         border: 1px solid #334155;
         text-align: center;
     }
-    .metric-value { font-size: 28px; font-weight: bold; color: #38BDF8; }
-    .metric-label { font-size: 14px; color: #94A3B8; }
+    .metric-value { font-size: 26px; font-weight: bold; color: #38BDF8; }
+    .metric-label { font-size: 13px; color: #94A3B8; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -91,7 +91,7 @@ with kpi3:
 with kpi4:
     st.markdown(f'<div class="metric-card"><div class="metric-value">${total_spend:,.2f}</div><div class="metric-label">Total Production Spend</div></div>', unsafe_allow_html=True)
 with kpi5:
-    st.markdown(f'<div class="metric-card"><div class="metric-value">55,000</div><div class="metric-label">Total Batches</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="metric-card"><div class="metric-value">{len(filtered_prod):,}</div><div class="metric-label">Total Batches</div></div>', unsafe_allow_html=True)
 
 st.write("")
 
@@ -110,12 +110,13 @@ with tab1:
     col1, col2 = st.columns([1, 1])
     
     # Factory Summary Aggregation
-    df_merged = quality.merge(production, on="production_id").merge(factories, on="factory_id_x")
-    fac_summary = df_merged.groupby("factory_name").agg(
-        Produced_Units=("produced_units", "sum"),
+    prod_fac = production.groupby("factory_id").agg(Produced_Units=("produced_units", "sum")).reset_index()
+    qual_fac = quality.groupby("factory_id").agg(
         Scrapped_Units=("defective_units", "sum"),
-        Inspected_Units=("inspected_units", "sum"),
+        Inspected_Units=("inspected_units", "sum")
     ).reset_index()
+    
+    fac_summary = factories.merge(prod_fac, on="factory_id").merge(qual_fac, on="factory_id")
     fac_summary["Defect_Rate_Pct"] = (fac_summary["Scrapped_Units"] / fac_summary["Inspected_Units"]) * 100
     fac_summary = fac_summary.sort_values("Defect_Rate_Pct", ascending=False)
     
@@ -126,10 +127,9 @@ with tab1:
         
     with col2:
         st.write("#### Factory Operational Scorecard")
-        st.dataframe(fac_summary.style.format({
+        st.dataframe(fac_summary[["factory_name", "city", "country", "Produced_Units", "Scrapped_Units", "Defect_Rate_Pct"]].style.format({
             "Produced_Units": "{:,}",
             "Scrapped_Units": "{:,}",
-            "Inspected_Units": "{:,}",
             "Defect_Rate_Pct": "{:.2f}%"
         }), use_container_width=True)
 
@@ -152,14 +152,16 @@ with tab2:
 with tab3:
     st.subheader("🚚 Raw Material Supplier Scrap & On-Time Delivery (OTD) Matrix")
     
-    sup_qual = quality.merge(suppliers, on="supplier_id").groupby(["supplier_name", "material_type", "on_time_delivery_percent", "quality_score"]).agg(
+    sup_qual = quality.groupby("supplier_id").agg(
         Total_Inspected=("inspected_units", "sum"),
         Total_Scrapped=("defective_units", "sum")
     ).reset_index()
-    sup_qual["Actual_Scrap_Rate_Pct"] = (sup_qual["Total_Scrapped"] / sup_qual["Total_Inspected"]) * 100
-    sup_qual = sup_qual.sort_values("Actual_Scrap_Rate_Pct", ascending=False)
     
-    st.dataframe(sup_qual.style.format({
+    sup_table = suppliers.merge(sup_qual, on="supplier_id")
+    sup_table["Actual_Scrap_Rate_Pct"] = (sup_table["Total_Scrapped"] / sup_table["Total_Inspected"]) * 100
+    sup_table = sup_table.sort_values("Actual_Scrap_Rate_Pct", ascending=False)
+    
+    st.dataframe(sup_table[["supplier_name", "material_type", "on_time_delivery_percent", "quality_score", "Total_Inspected", "Total_Scrapped", "Actual_Scrap_Rate_Pct"]].style.format({
         "Total_Inspected": "{:,}",
         "Total_Scrapped": "{:,}",
         "on_time_delivery_percent": "{:.1f}%",
@@ -182,12 +184,14 @@ with tab4:
         
     with col2:
         st.write("#### Shift-Level Quality Disparity")
-        shift_qual = quality.merge(shifts, on="shift_id").groupby("shift_name").agg(
+        shift_qual = quality.groupby("shift_id").agg(
             Inspected=("inspected_units", "sum"),
             Defects=("defective_units", "sum")
         ).reset_index()
-        shift_qual["Shift_Defect_Rate"] = (shift_qual["Defects"] / shift_qual["Inspected"]) * 100
-        st.dataframe(shift_qual.style.format({
+        shift_table = shifts.merge(shift_qual, on="shift_id")
+        shift_table["Shift_Defect_Rate"] = (shift_table["Defects"] / shift_table["Inspected"]) * 100
+        
+        st.dataframe(shift_table[["shift_name", "Inspected", "Defects", "Shift_Defect_Rate"]].style.format({
             "Inspected": "{:,}",
             "Defects": "{:,}",
             "Shift_Defect_Rate": "{:.2f}%"
@@ -214,4 +218,4 @@ with tab5:
         from ai.ai_business_assistant import ManufacturingIntelligenceEngine
         engine = ManufacturingIntelligenceEngine()
         response = engine.answer_question_grounded(user_query)
-        st.code(response, language="markdown")
+        st.markdown(f"```markdown\n{response}\n```")
