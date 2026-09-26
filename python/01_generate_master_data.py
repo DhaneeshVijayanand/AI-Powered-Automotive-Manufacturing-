@@ -22,13 +22,13 @@ os.makedirs(RAW_DATA_DIR, exist_ok=True)
 print("[INFO] Generating Master Data for Apex TurboTech...")
 
 # -------------------------------------------------------------------------
-# 1. FACTORIES (5 Manufacturing Plants)
+# 1. FACTORIES (5 Global Manufacturing Plants: Tokyo, Berlin, Dubai, Mexicali, Wuhan)
 # -------------------------------------------------------------------------
 factories_data = [
-    {"factory_id": "FAC_01", "factory_name": "Bangalore Plant", "city": "Bangalore", "country": "India", "factory_capacity": 15000},
-    {"factory_id": "FAC_02", "factory_name": "Pune Plant", "city": "Pune", "country": "India", "factory_capacity": 12000},
-    {"factory_id": "FAC_03", "factory_name": "Mexicali Plant", "city": "Mexicali", "country": "Mexico", "factory_capacity": 18000},
-    {"factory_id": "FAC_04", "factory_name": "Bucharest Plant", "city": "Bucharest", "country": "Romania", "factory_capacity": 14000},
+    {"factory_id": "FAC_01", "factory_name": "Tokyo Plant", "city": "Tokyo", "country": "Japan", "factory_capacity": 15000},
+    {"factory_id": "FAC_02", "factory_name": "Berlin Plant", "city": "Berlin", "country": "Germany", "factory_capacity": 12000},
+    {"factory_id": "FAC_03", "factory_name": "Dubai Plant", "city": "Dubai", "country": "UAE", "factory_capacity": 14000},
+    {"factory_id": "FAC_04", "factory_name": "Mexicali Plant", "city": "Mexicali", "country": "Mexico", "factory_capacity": 18000},
     {"factory_id": "FAC_05", "factory_name": "Wuhan Plant", "city": "Wuhan", "country": "China", "factory_capacity": 16000},
 ]
 df_factories = pd.DataFrame(factories_data)
@@ -67,8 +67,6 @@ print(f" -> Generated shifts.csv ({len(df_shifts)} records)")
 # -------------------------------------------------------------------------
 # 4. SUPPLIERS (10 Specialized Material Vendors)
 # -------------------------------------------------------------------------
-# Note: SUP_04 (Apex Castings Ltd) is intentionally assigned lower quality score
-# and lower on-time delivery to simulate realistic supplier risk for analysis.
 suppliers_data = [
     {"supplier_id": "SUP_01", "supplier_name": "Precision Alloys Corp", "material_type": "Titanium Ingot", "delivery_days": 5, "on_time_delivery_percent": 96.5, "quality_score": 94.2, "material_cost": 450.0},
     {"supplier_id": "SUP_02", "supplier_name": "Aerospace Forgings Ltd", "material_type": "Billet Aluminum", "delivery_days": 4, "on_time_delivery_percent": 95.0, "quality_score": 92.8, "material_cost": 210.0},
@@ -86,9 +84,8 @@ df_suppliers.to_csv(os.path.join(RAW_DATA_DIR, "suppliers.csv"), index=False)
 print(f" -> Generated suppliers.csv ({len(df_suppliers)} records)")
 
 # -------------------------------------------------------------------------
-# 5. MACHINES (20 High-Precision CNC & Milling Units across Factories)
+# 5. MACHINES (20 Units: 4 per plant across Tokyo, Berlin, Dubai, Mexicali, Wuhan)
 # -------------------------------------------------------------------------
-# 4 machines per factory (20 total)
 machine_types = [
     ("5-Axis CNC Milling Center", 68.5),
     ("CNC Precision Lathe", 62.0),
@@ -104,8 +101,7 @@ for factory in factories_data:
     for m_type, base_temp in machine_types:
         m_id = f"MCH_{machine_idx:03d}"
         
-        # Realistic initial baseline metrics
-        # Machine MCH_007 in Pune (FAC_02) is designed with high downtime and higher temp for root-cause analysis
+        # Machine MCH_007 in Berlin (FAC_02) has high downtime and higher temp for root-cause analysis
         if m_id == "MCH_007":
             operating_hours = 3100.0
             downtime_hours = 385.5      # Unusually high downtime
@@ -133,4 +129,4 @@ df_machines = pd.DataFrame(machines_data)
 df_machines.to_csv(os.path.join(RAW_DATA_DIR, "machines.csv"), index=False)
 print(f" -> Generated machines.csv ({len(df_machines)} records)")
 
-print("\n[SUCCESS] Master data generation complete! Files saved to data/raw/")
+print("\n[SUCCESS] Master data generation complete with new cities: Tokyo, Berlin, Dubai, Mexicali, Wuhan!")

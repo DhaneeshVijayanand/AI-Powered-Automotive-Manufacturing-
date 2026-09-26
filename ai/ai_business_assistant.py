@@ -5,6 +5,7 @@ Project: AI-Powered Automotive Manufacturing BI & Quality Analysis System
 Description: AI Business Intelligence Assistant that extracts verified SQL
              metrics and generates grounded, executive explanations and 
              business recommendations without hallucinations.
+Plants: Tokyo (JP), Berlin (DE), Dubai (AE), Mexicali (MX), Wuhan (CN)
 =============================================================================
 """
 
@@ -116,7 +117,6 @@ class ManufacturingIntelligenceEngine:
     def answer_question_grounded(self, question):
         """Generates structured, grounded business analysis using verified numbers."""
         metrics = self.get_verified_metrics_snapshot()
-        metrics_json = json.dumps(metrics, indent=2)
         
         q_lower = question.lower()
         
@@ -129,21 +129,21 @@ class ManufacturingIntelligenceEngine:
 EXECUTIVE INTELLIGENCE BRIEFING: FACTORY PERFORMANCE BENCHMARKING
 ================================================================================
 1. EXECUTIVE SUMMARY:
-   The Pune Plant (FAC_02) is the lowest-performing facility with an elevated defect 
+   The Berlin Plant (FAC_02) is the lowest-performing facility with an elevated defect 
    rate of {worst_fac['defect_rate_pct']}%, compared to the company benchmark of {best_fac['defect_rate_pct']}% 
-   achieved by Mexicali (FAC_03) and Wuhan (FAC_05).
+   achieved by Mexicali (FAC_04) and Wuhan (FAC_05).
 
 2. VERIFIED DATA EVIDENCE:
-   * Pune Plant Scrap Rate: {worst_fac['defect_rate_pct']}% ({worst_fac['defect_units']:,} scrap units out of {worst_fac['produced_units']:,} produced).
-   * Pune Operational Efficiency: {worst_fac['efficiency_pct']}% (vs 96.78% company standard).
-   * Best Performing Plant: Mexicali Plant ({best_fac['defect_rate_pct']}% defect rate, 96.75% efficiency).
+   * Berlin Plant Scrap Rate: {worst_fac['defect_rate_pct']}% ({worst_fac['defect_units']:,} scrap units out of {worst_fac['produced_units']:,} produced).
+   * Berlin Operational Efficiency: {worst_fac['efficiency_pct']}% (vs 96.78% company standard).
+   * Best Performing Plants: Mexicali & Wuhan ({best_fac['defect_rate_pct']}% defect rate, 96.75% efficiency).
 
 3. ROOT-CAUSE ASSESSMENT:
-   * Machine Reliability: Pune houses Machine MCH_007, which has experienced {metrics['critical_machines'][0]['downtime_hours']} downtime hours and operates at a critical temperature of {metrics['critical_machines'][0]['current_temp_celsius']}°C.
-   * Supplier Impact: Pune consumes casting allocations from Apex Raw Castings Ltd (SUP_04), which exhibits an abnormally high supplier scrap rate of 8.21%.
+   * Machine Reliability: Berlin houses Machine MCH_007, which has experienced {metrics['critical_machines'][0]['downtime_hours']} downtime hours and operates at a critical temperature of {metrics['critical_machines'][0]['current_temp_celsius']}°C.
+   * Supplier Impact: Berlin consumes casting allocations from Apex Raw Castings Ltd (SUP_04), which exhibits an abnormally high supplier scrap rate of 8.21%.
 
 4. ACTIONABLE MANAGEMENT RECOMMENDATIONS:
-   * Immediate (0-7 Days): Dispatch corporate maintenance to perform thermal overhaul on Machine MCH_007 in Pune.
+   * Immediate (0-7 Days): Dispatch corporate maintenance to perform thermal overhaul on Machine MCH_007 in Berlin.
    * Medium-Term (30 Days): Conduct a supplier quality audit on SUP_04 and rebalance raw casting shipments to EuroMetals (SUP_05).
 ================================================================================
 """
@@ -159,7 +159,7 @@ EXECUTIVE INTELLIGENCE BRIEFING: CRITICAL MACHINE & MAINTENANCE ANALYSIS
    bottleneck across all 5 plants, responsible for {top_m['downtime_hours']} hours of unplanned downtime.
 
 2. VERIFIED DATA EVIDENCE:
-   * Machine ID: {top_m['machine_id']} (Location: Pune Plant)
+   * Machine ID: {top_m['machine_id']} (Location: Berlin Plant)
    * Unplanned Downtime: {top_m['downtime_hours']} hours (Downtime Ratio: {top_m['downtime_pct']}%)
    * Operating Temperature: {top_m['current_temp_celsius']}°C (Exceeds 75°C Critical Threshold)
    * Maintenance Breakdown Count: {top_m['maintenance_count']} recorded events
@@ -240,32 +240,9 @@ EXECUTIVE INTELLIGENCE BRIEFING: OVERALL QUALITY & OPERATIONS DIAGNOSTIC
    overall defect rate of {kpis['overall_defect_rate_pct']}%, incurring ${kpis['total_spend_usd']:,.2f} in total production cost.
 
 2. TOP OPERATIONAL PRIORITIES FOR LEADERSHIP:
-   * 1. Factory Optimization: Pune Plant ({metrics['factories_performance'][0]['defect_rate_pct']}% scrap) requires immediate engineering intervention.
+   * 1. Factory Optimization: Berlin Plant ({metrics['factories_performance'][0]['defect_rate_pct']}% scrap) requires immediate engineering intervention.
    * 2. Machine Bottleneck: Machine MCH_007 causes 385.5 hrs downtime and runs at critical 84.5°C temp.
    * 3. Procurement Risk: Supplier SUP_04 (Apex Raw Castings) is generating 8.21% scrap.
    * 4. Dominant Defect Modes: Casting Porosity (26.86%) and Dimensional Variance (20.45%) account for 47.3% of all rejected parts.
 ================================================================================
 """
-
-def main():
-    engine = ManufacturingIntelligenceEngine()
-    print("=" * 75)
-    print(" APEX TURBOTECH - AI MANUFACTURING BUSINESS ASSISTANT")
-    print(" Verified Grounded Reasoning Engine (Zero Hallucination Guarantee)")
-    print("=" * 75)
-    
-    questions = [
-        "1. Which factory is performing poorly and needs the most attention?",
-        "2. Which machine is causing the most downtime and why?",
-        "3. Which supplier represents the highest quality and delivery risk?",
-        "4. Is there a quality difference across operating shifts?",
-        "5. What are our overall quality issues and what should management investigate first?"
-    ]
-    
-    for q in questions:
-        print(f"\n[QUERY] Management asks: {q}")
-        response = engine.answer_question_grounded(q)
-        print(response)
-
-if __name__ == "__main__":
-    main()
