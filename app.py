@@ -61,26 +61,30 @@ st.sidebar.header("🔍 Global Operational Filters")
 selected_factory = st.sidebar.selectbox("Select Plant", ["All Plants"] + factories["factory_name"].tolist())
 selected_shift = st.sidebar.selectbox("Select Shift", ["All Shifts"] + shifts["shift_name"].tolist())
 
-# Filter data
-filtered_prod = production.copy()
-filtered_qual = quality.copy()
+# Join quality with production shift information
+merged_data = quality.merge(
+    production[["production_id", "shift_id", "planned_units", "produced_units", "production_cost"]],
+    on="production_id"
+)
+
+# Apply Filters
+filtered_data = merged_data.copy()
 
 if selected_factory != "All Plants":
     fac_id = factories[factories["factory_name"] == selected_factory]["factory_id"].values[0]
-    filtered_prod = filtered_prod[filtered_prod["factory_id"] == fac_id]
-    filtered_qual = filtered_qual[filtered_qual["factory_id"] == fac_id]
+    filtered_data = filtered_data[filtered_data["factory_id"] == fac_id]
 
 if selected_shift != "All Shifts":
     shf_id = shifts[shifts["shift_name"] == selected_shift]["shift_id"].values[0]
-    filtered_prod = filtered_prod[filtered_prod["shift_id"] == shf_id]
+    filtered_data = filtered_data[filtered_data["shift_id"] == shf_id]
 
 # Top KPI Cards
 kpi1, kpi2, kpi3, kpi4, kpi5 = st.columns(5)
-total_produced = filtered_prod["produced_units"].sum()
-total_inspected = filtered_qual["inspected_units"].sum()
-total_defects = filtered_qual["defective_units"].sum()
+total_produced = filtered_data["produced_units"].sum()
+total_inspected = filtered_data["inspected_units"].sum()
+total_defects = filtered_data["defective_units"].sum()
 defect_rate = (total_defects / total_inspected * 100) if total_inspected > 0 else 0
-total_spend = filtered_prod["production_cost"].sum()
+total_spend = filtered_data["production_cost"].sum()
 
 with kpi1:
     st.markdown(f'<div class="metric-card"><div class="metric-value">{total_produced:,}</div><div class="metric-label">Total Produced Units</div></div>', unsafe_allow_html=True)
@@ -91,7 +95,7 @@ with kpi3:
 with kpi4:
     st.markdown(f'<div class="metric-card"><div class="metric-value">${total_spend:,.2f}</div><div class="metric-label">Total Production Spend</div></div>', unsafe_allow_html=True)
 with kpi5:
-    st.markdown(f'<div class="metric-card"><div class="metric-value">{len(filtered_prod):,}</div><div class="metric-label">Total Batches</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="metric-card"><div class="metric-value">{len(filtered_data):,}</div><div class="metric-label">Total Batches</div></div>', unsafe_allow_html=True)
 
 st.write("")
 
@@ -109,14 +113,13 @@ with tab1:
     st.subheader("🏭 Global Multi-Plant Performance Benchmarking")
     col1, col2 = st.columns([1, 1])
     
-    # Factory Summary Aggregation
-    prod_fac = production.groupby("factory_id").agg(Produced_Units=("produced_units", "sum")).reset_index()
-    qual_fac = quality.groupby("factory_id").agg(
+    fac_group = merged_data.groupby("factory_id").agg(
+        Produced_Units=("produced_units", "sum"),
         Scrapped_Units=("defective_units", "sum"),
         Inspected_Units=("inspected_units", "sum")
     ).reset_index()
     
-    fac_summary = factories.merge(prod_fac, on="factory_id").merge(qual_fac, on="factory_id")
+    fac_summary = factories.merge(fac_group, on="factory_id")
     fac_summary["Defect_Rate_Pct"] = (fac_summary["Scrapped_Units"] / fac_summary["Inspected_Units"]) * 100
     fac_summary = fac_summary.sort_values("Defect_Rate_Pct", ascending=False)
     
@@ -184,7 +187,7 @@ with tab4:
         
     with col2:
         st.write("#### Shift-Level Quality Disparity")
-        shift_qual = quality.groupby("shift_id").agg(
+        shift_qual = merged_data.groupby("shift_id").agg(
             Inspected=("inspected_units", "sum"),
             Defects=("defective_units", "sum")
         ).reset_index()
