@@ -200,7 +200,6 @@ PLANT_LOCAL_CURRENCIES = {
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CLEAN_DIR = os.path.join(BASE_DIR, "data", "cleaned")
 
-@st.cache_data
 def get_enterprise_data():
     factories = pd.read_csv(os.path.join(CLEAN_DIR, "factories.csv"))
     products = pd.read_csv(os.path.join(CLEAN_DIR, "products.csv"))
