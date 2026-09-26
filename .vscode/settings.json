@@ -1,0 +1,5 @@
+{
+    "git.path": "E:/automotive-bi-project/tools/git/cmd/git.exe",
+    "git.enabled": true,
+    "git.autorefresh": true
+}
