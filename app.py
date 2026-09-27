@@ -1,7 +1,7 @@
 """
 =============================================================================
 APEX TURBOTECH — ENTERPRISE AUTOMOTIVE INTELLIGENCE & QUALITY PLATFORM
-Full Dynamic Multi-Currency Financial Engine (USD, EUR, JPY, AED, MXN, CNY)
+Vibrant Color-Coded Multi-Plant Defect Analysis & Multi-Currency System
 Plants: Tokyo (JP), Berlin (DE), Dubai (AE), Mexicali (MX), Wuhan (CN)
 =============================================================================
 """
@@ -91,13 +91,14 @@ st.markdown("""
 
     .kpi-card:hover {
         transform: translateY(-2px);
-        border-top-color: #818CF8;
         box-shadow: 0 15px 30px -5px rgba(56, 189, 248, 0.15);
     }
 
-    .kpi-card.warning { border-top-color: #F59E0B; }
-    .kpi-card.danger { border-top-color: #EF4444; }
-    .kpi-card.success { border-top-color: #10B981; }
+    .kpi-card.produced { border-top-color: #38BDF8; }
+    .kpi-card.scrapped { border-top-color: #EC4899; }
+    .kpi-card.defect { border-top-color: #F59E0B; }
+    .kpi-card.spend { border-top-color: #10B981; }
+    .kpi-card.unitcost { border-top-color: #8B5CF6; }
 
     .kpi-label {
         color: #94A3B8;
@@ -129,6 +130,7 @@ st.markdown("""
     .badge-success { background: rgba(16, 185, 129, 0.15); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.3); }
     .badge-info { background: rgba(56, 189, 248, 0.15); color: #7DD3FC; border: 1px solid rgba(56, 189, 248, 0.3); }
     .badge-warning { background: rgba(245, 158, 11, 0.15); color: #FCD34D; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-purple { background: rgba(192, 132, 252, 0.15); color: #E9D5FF; border: 1px solid rgba(192, 132, 252, 0.3); }
 
     /* Mission Control Sidebar Styling */
     section[data-testid="stSidebar"] {
@@ -175,7 +177,27 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
-# 3. MULTI-CURRENCY CONVERSION SYSTEM
+# 3. DISTINCT PLANT COLOR PALETTE
+# -----------------------------------------------------------------------------
+PLANT_COLORS = {
+    "Berlin Plant": "#EF4444",    # Crimson Red (Critical Scrap Anomaly)
+    "Dubai Plant": "#F59E0B",     # Amber Gold (Alert / Warning)
+    "Tokyo Plant": "#38BDF8",     # Electric Cyan (High Precision)
+    "Mexicali Plant": "#10B981",  # Emerald Green (Top Yield)
+    "Wuhan Plant": "#C084FC"      # Electric Purple (High Volume)
+}
+
+DEFECT_COLORS = {
+    "Casting Porosity / Blowholes": "#EF4444",
+    "Dimensional Out-of-Tolerance": "#F59E0B",
+    "Surface Micro-Crack": "#EC4899",
+    "Dynamic Unbalance": "#38BDF8",
+    "Rough Surface Finish": "#8B5CF6",
+    "Thread / Fastener Defect": "#10B981"
+}
+
+# -----------------------------------------------------------------------------
+# 4. MULTI-CURRENCY CONVERSION SYSTEM
 # -----------------------------------------------------------------------------
 CURRENCY_RATES = {
     "USD ($) — Corporate Base": {"symbol": "$", "code": "USD", "rate": 1.0, "name": "US Dollar"},
@@ -195,7 +217,7 @@ PLANT_LOCAL_CURRENCIES = {
 }
 
 # -----------------------------------------------------------------------------
-# 4. DATA INGESTION & CACHING LAYER
+# 5. DATA INGESTION & FRESH LOADING LAYER
 # -----------------------------------------------------------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CLEAN_DIR = os.path.join(BASE_DIR, "data", "cleaned")
@@ -219,7 +241,7 @@ def get_enterprise_data():
 factories, products, shifts, suppliers, machines, production, quality, master_df = get_enterprise_data()
 
 # -----------------------------------------------------------------------------
-# 5. ADVANCED MISSION CONTROL SIDEBAR
+# 6. ADVANCED MISSION CONTROL SIDEBAR
 # -----------------------------------------------------------------------------
 st.sidebar.markdown("""
 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
@@ -241,7 +263,7 @@ st.sidebar.markdown("""
     </div>
     <div class="plant-status-row">
         <span>Tokyo Plant (JP)</span>
-        <span class="kpi-badge badge-success">🟢 2.81% Normal</span>
+        <span class="kpi-badge badge-info">🔵 2.81% Normal</span>
     </div>
     <div class="plant-status-row">
         <span>Mexicali Plant (MX)</span>
@@ -249,7 +271,7 @@ st.sidebar.markdown("""
     </div>
     <div class="plant-status-row">
         <span>Wuhan Plant (CN)</span>
-        <span class="kpi-badge badge-success">🟢 2.80% Normal</span>
+        <span class="kpi-badge badge-purple">🟣 2.80% Normal</span>
     </div>
     <div class="plant-status-row">
         <span>Dubai Plant (AE)</span>
@@ -285,21 +307,6 @@ st.sidebar.markdown("#### ⚙️ Real-Time Quality Thresholds")
 scrap_threshold = st.sidebar.slider("Scrap Alert Limit (%)", min_value=1.5, max_value=5.0, value=2.5, step=0.1)
 temp_limit = st.sidebar.slider("Machine Temp Alarm (°C)", min_value=60, max_value=95, value=75, step=1)
 
-# System Status Telemetry Box
-st.sidebar.markdown(f"""
-<div class="sidebar-panel" style="margin-top: 14px;">
-    <div style="font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; margin-bottom: 6px;">
-        📡 Enterprise Telemetry
-    </div>
-    <div style="font-size: 11px; color: #CBD5E1; line-height: 1.6;">
-        • <b>Data Engine:</b> <span class="telemetry-tag">MySQL 8.0 DWH</span><br>
-        • <b>Active FX:</b> <span class="telemetry-tag">1 USD = {curr_rate} {curr_code}</span><br>
-        • <b>Total Batches:</b> <span class="telemetry-tag">55,000 Ingested</span><br>
-        • <b>AI Copilot:</b> <span class="telemetry-tag">Grounded v2.4 (Active)</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
 # Apply active filtering
 filtered_df = master_df.copy()
 
@@ -316,7 +323,7 @@ if selected_product != "All Product Categories":
     filtered_df = filtered_df[filtered_df["product_id"].isin(p_ids)]
 
 # -----------------------------------------------------------------------------
-# 6. TOP BRAND HEADER & KPI SCORECARDS (ALL DYNAMICALLY CONVERTED)
+# 7. TOP BRAND HEADER & DYNAMIC KPI SCORECARDS
 # -----------------------------------------------------------------------------
 st.markdown(f"""
 <div class="brand-header">
@@ -357,37 +364,37 @@ else:
 
 kpi_html = f"""
 <div class="kpi-container">
-    <div class="kpi-card success">
+    <div class="kpi-card produced">
         <div class="kpi-label">Produced Volume</div>
         <div class="kpi-value">{total_produced:,.0f}</div>
-        <span class="kpi-badge badge-success">↑ 96.3% OEE Yield</span>
+        <span class="kpi-badge badge-info">↑ 96.3% OEE Yield</span>
     </div>
-    <div class="kpi-card danger">
+    <div class="kpi-card scrapped">
         <div class="kpi-label">Scrapped Components</div>
-        <div class="kpi-value">{total_defects:,.0f}</div>
+        <div class="kpi-value" style="color: #F472B6;">{total_defects:,.0f}</div>
         <span class="kpi-badge badge-danger">195.4K Total Rejects</span>
     </div>
-    <div class="kpi-card {'danger' if defect_rate > scrap_threshold else 'warning'}">
+    <div class="kpi-card defect">
         <div class="kpi-label">Defect Rate</div>
-        <div class="kpi-value">{defect_rate:.2f}%</div>
-        <span class="kpi-badge {'badge-danger' if defect_rate > scrap_threshold else 'badge-info'}">Alarm: &lt; {scrap_threshold:.1f}%</span>
+        <div class="kpi-value" style="color: {'#EF4444' if defect_rate > scrap_threshold else '#FBBF24'};">{defect_rate:.2f}%</div>
+        <span class="kpi-badge {'badge-danger' if defect_rate > scrap_threshold else 'badge-warning'}">Limit: &lt; {scrap_threshold:.1f}%</span>
     </div>
-    <div class="kpi-card">
+    <div class="kpi-card spend">
         <div class="kpi-label">Total Spend ({curr_code})</div>
-        <div class="kpi-value">{curr_symbol}{total_spend_converted/1e6:,.1f}M</div>
-        <span class="kpi-badge badge-info">100% Converted ({curr_code})</span>
+        <div class="kpi-value" style="color: #34D399;">{curr_symbol}{total_spend_converted/1e6:,.1f}M</div>
+        <span class="kpi-badge badge-success">100% Converted ({curr_code})</span>
     </div>
-    <div class="kpi-card warning">
+    <div class="kpi-card unitcost">
         <div class="kpi-label">{card5_label}</div>
-        <div class="kpi-value">{card5_value}</div>
-        <span class="kpi-badge badge-info">{card5_badge}</span>
+        <div class="kpi-value" style="color: #C084FC;">{card5_value}</div>
+        <span class="kpi-badge badge-purple">{card5_badge}</span>
     </div>
 </div>
 """
 st.markdown(kpi_html, unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
-# 7. PROFESSIONAL EXECUTIVE TABS
+# 8. PROFESSIONAL EXECUTIVE TABS
 # -----------------------------------------------------------------------------
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "🏭 Multi-Plant Benchmarking & Spend", 
@@ -410,7 +417,7 @@ def apply_pro_layout(fig, title_text=""):
     )
     return fig
 
-# TAB 1: PLANT BENCHMARKING & MULTI-CURRENCY COMPARISON
+# TAB 1: PLANT BENCHMARKING & DISTINCT COLOR CODING
 with tab1:
     st.markdown(f"### 🏭 Global Multi-Plant Benchmarking & Spend ({curr_code})")
     col1, col2 = st.columns([3, 2])
@@ -436,19 +443,20 @@ with tab1:
     fac_summary = fac_summary.sort_values("Defect_Rate_Pct", ascending=True)
 
     with col1:
+        # DISTINCT VIBRANT COLOR FOR EACH PLANT BAR
         fig_bar = px.bar(
             fac_summary,
             x="Defect_Rate_Pct",
             y="factory_name",
             orientation="h",
-            color="Defect_Rate_Pct",
-            color_continuous_scale=["#10B981", "#38BDF8", "#F59E0B", "#EF4444"],
+            color="factory_name",
+            color_discrete_map=PLANT_COLORS,
             text_auto=".2f",
             title=f"Defect Rate (%) by Plant vs Alarm Limit ({scrap_threshold:.1f}%)"
         )
         fig_bar.add_vline(x=scrap_threshold, line_dash="dash", line_color="#EF4444", annotation_text=f"Alarm ({scrap_threshold:.1f}%)")
         apply_pro_layout(fig_bar)
-        fig_bar.update_layout(coloraxis_showscale=False, height=360)
+        fig_bar.update_layout(showlegend=False, height=360)
         st.plotly_chart(fig_bar, use_container_width=True)
 
     with col2:
@@ -457,7 +465,8 @@ with tab1:
             names="factory_name",
             values="Spend_in_Selected_Currency",
             hole=0.6,
-            color_discrete_sequence=["#38BDF8", "#818CF8", "#C084FC", "#F472B6", "#34D399"],
+            color="factory_name",
+            color_discrete_map=PLANT_COLORS,
             title=f"Global Operational Spend ({curr_code})"
         )
         apply_pro_layout(fig_spend)
@@ -485,8 +494,8 @@ with tab2:
             x="temperature",
             y="downtime_hours",
             size="maintenance_count",
-            color="temperature",
-            color_continuous_scale=["#38BDF8", "#F59E0B", "#EF4444"],
+            color="factory_name",
+            color_discrete_map=PLANT_COLORS,
             hover_name="machine_name",
             text="machine_id",
             title=f"Operating Temp (°C) vs. Downtime (Hours) [Alarm: {temp_limit}°C]"
@@ -503,12 +512,12 @@ with tab2:
             x="downtime_hours",
             y="machine_name",
             orientation="h",
-            color="downtime_hours",
-            color_continuous_scale=["#F59E0B", "#EF4444"],
+            color="factory_name",
+            color_discrete_map=PLANT_COLORS,
             title="Top 5 Critical Downtime Bottlenecks"
         )
         apply_pro_layout(fig_top_m)
-        fig_top_m.update_layout(coloraxis_showscale=False, height=380)
+        fig_top_m.update_layout(showlegend=False, height=380)
         st.plotly_chart(fig_top_m, use_container_width=True)
 
     st.error("🚨 **CRITICAL ALERT:** Machine **`MCH_007` (Berlin Plant)** operates at **84.5°C** (+9.5°C above safety cutoff), causing **385.5 hours of downtime** and 14 maintenance breakdowns.")
@@ -534,7 +543,7 @@ with tab3:
             y="Actual_Scrap_Rate_Pct",
             size="Total_Inspected",
             color="Actual_Scrap_Rate_Pct",
-            color_continuous_scale=["#10B981", "#F59E0B", "#EF4444"],
+            color_continuous_scale=["#10B981", "#38BDF8", "#F59E0B", "#EF4444"],
             hover_name="supplier_name",
             text="supplier_name",
             title="Supplier Risk Matrix: On-Time Delivery (OTD %) vs. Scrap Rate (%)"
@@ -552,7 +561,7 @@ with tab3:
             y="supplier_name",
             orientation="h",
             color="Actual_Scrap_Rate_Pct",
-            color_continuous_scale=["#10B981", "#EF4444"],
+            color_continuous_scale=["#10B981", "#F59E0B", "#EF4444"],
             title="Supplier In-Plant Scrap Comparison"
         )
         apply_pro_layout(fig_radar)
@@ -569,7 +578,7 @@ with tab3:
         "Material_Cost_Converted": f"{curr_symbol}{{:,.2f}} {curr_code}"
     }), use_container_width=True)
 
-# TAB 4: DEFECT PARETO & SHIFTS
+# TAB 4: DEFECT PARETO & DISTINCT DEFECT COLORS
 with tab4:
     st.markdown("### 📈 Defect Mode Pareto (80/20) & Shift Disparity")
     col1, col2 = st.columns([3, 2])
@@ -580,12 +589,27 @@ with tab4:
 
     with col1:
         fig_pareto = make_subplots(specs=[[{"secondary_y": True}]])
+        
+        # Color each defect bar distinctly
+        bar_colors = [DEFECT_COLORS.get(dt, "#38BDF8") for dt in defect_counts["Defect_Type"]]
+        
         fig_pareto.add_trace(
-            go.Bar(x=defect_counts["Defect_Type"], y=defect_counts["Count"], name="Scrap Count", marker_color="#38BDF8"),
+            go.Bar(
+                x=defect_counts["Defect_Type"], 
+                y=defect_counts["Count"], 
+                name="Scrap Count", 
+                marker_color=bar_colors
+            ),
             secondary_y=False
         )
         fig_pareto.add_trace(
-            go.Scatter(x=defect_counts["Defect_Type"], y=defect_counts["Cumulative_Pct"], name="Cumulative %", mode="lines+markers", line=dict(color="#EF4444", width=3)),
+            go.Scatter(
+                x=defect_counts["Defect_Type"], 
+                y=defect_counts["Cumulative_Pct"], 
+                name="Cumulative %", 
+                mode="lines+markers", 
+                line=dict(color="#FF0054", width=3)
+            ),
             secondary_y=True
         )
         fig_pareto.add_hline(y=80.0, line_dash="dash", line_color="#F59E0B", secondary_y=True)
@@ -605,13 +629,17 @@ with tab4:
             shift_summary,
             x="shift_name",
             y="Defect_Rate",
-            color="Defect_Rate",
-            color_continuous_scale=["#38BDF8", "#EF4444"],
+            color="shift_name",
+            color_discrete_map={
+                "Morning Shift": "#10B981",   # Green (Lowest Defect Rate)
+                "Evening Shift": "#38BDF8",   # Blue
+                "Night Shift": "#EF4444"      # Red (Highest Defect Rate)
+            },
             text_auto=".2f",
             title="Defect Rate (%) Across Work Shifts"
         )
         apply_pro_layout(fig_shift)
-        fig_shift.update_layout(coloraxis_showscale=False, height=380)
+        fig_shift.update_layout(showlegend=False, height=380)
         st.plotly_chart(fig_shift, use_container_width=True)
 
 # TAB 5: AI COPILOT
