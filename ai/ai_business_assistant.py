@@ -10,10 +10,19 @@ Plants: Tokyo (JP), Berlin (DE), Dubai (AE), Mexicali (MX), Wuhan (CN)
 """
 
 import os
+import sys
 import json
 import sqlite3
 import pandas as pd
-from system_prompts import MANUFACTURING_ANALYST_SYSTEM_PROMPT, generate_context_prompt
+
+# Robust import handling for standalone and Streamlit app executions
+try:
+    from ai.system_prompts import MANUFACTURING_ANALYST_SYSTEM_PROMPT, generate_context_prompt
+except ImportError:
+    try:
+        from system_prompts import MANUFACTURING_ANALYST_SYSTEM_PROMPT, generate_context_prompt
+    except ImportError:
+        pass
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CLEAN_DIR = os.path.join(BASE_DIR, "data", "cleaned")
